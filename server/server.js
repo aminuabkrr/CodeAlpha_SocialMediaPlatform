@@ -1,4 +1,5 @@
 require('dotenv').config();
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -24,7 +25,10 @@ app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/comments', commentRoutes);
 
-app.use(notFound);
+// Serve the frontend so the whole app can run from one server/port.
+app.use(express.static(path.join(__dirname, '../client')));
+
+app.use('/api', notFound); // 404 only applies to unmatched /api/* routes
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
