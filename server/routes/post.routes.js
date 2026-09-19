@@ -10,6 +10,7 @@ const {
   deletePost,
 } = require('../controllers/post.controller');
 const { likePost, unlikePost, getPostLikes } = require('../controllers/like.controller');
+const { getComments, addComment } = require('../controllers/comment.controller');
 const { protect } = require('../middleware/auth');
 const validate = require('../middleware/validate');
 
@@ -47,5 +48,21 @@ router.delete('/:id', protect, deletePost);
 router.post('/:postId/like', protect, likePost);
 router.delete('/:postId/like', protect, unlikePost);
 router.get('/:postId/likes', getPostLikes);
+
+router.get('/:postId/comments', getComments);
+router.post(
+  '/:postId/comments',
+  protect,
+  [
+    body('content')
+      .trim()
+      .notEmpty()
+      .withMessage('Comment content is required')
+      .isLength({ max: 300 })
+      .withMessage('Comment cannot exceed 300 characters'),
+  ],
+  validate,
+  addComment
+);
 
 module.exports = router;
