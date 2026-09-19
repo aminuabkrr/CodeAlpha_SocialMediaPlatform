@@ -2,7 +2,7 @@ const express = require('express');
 const { body } = require('express-validator');
 const router = express.Router();
 
-const { getUserProfile, updateProfile } = require('../controllers/user.controller');
+const { getUserProfile, updateProfile, getUserPosts } = require('../controllers/user.controller');
 const {
   followUser,
   unfollowUser,
@@ -29,6 +29,7 @@ router.delete('/:userId/follow', protect, unfollowUser);
 router.get('/:userId/followers', getFollowers);
 router.get('/:userId/following', getFollowing);
 
+router.get('/:username/posts', getUserPosts);
 router.get('/:username', optionalAuth, getUserProfile);
 
 module.exports = router;
