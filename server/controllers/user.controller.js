@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Follow = require('../models/Follow');
 const { success, failure } = require('../utils/response');
 
 // GET /api/users/:username
@@ -10,9 +11,18 @@ const getUserProfile = async (req, res, next) => {
       return failure(res, 'User not found', 404);
     }
 
-    // isFollowing is resolved here if a Follow model exists later (Stage 4).
-    // For now, just return the base profile.
-    return success(res, { user }, 'Profile fetched');
+    let isFollowing = false;
+
+    // req.user is only set if a valid token was attached (optionalAuth, see middleware/auth.js).
+    if (req.user && String(req.user._id) !== String(user._id)) {
+      const existingFollow = await Follow.findOne({
+        follower: req.user._id,
+        following: user._id,
+      });
+      isFollowing = !!existingFollow;
+    }
+
+    return success(res, { user, isFollowing }, 'Profile fetched');
   } catch (err) {
     next(err);
   }
@@ -34,8 +44,6 @@ const updateProfile = async (req, res, next) => {
       return failure(res, 'No valid fields provided to update', 400);
     }
 
-    // req.user._id comes from the auth token - a user can only ever
-    // update the profile attached to their own token, never an :id from params/body.
     const updatedUser = await User.findByIdAndUpdate(req.user._id, updates, {
       new: true,
       runValidators: true,
