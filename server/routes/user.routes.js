@@ -9,8 +9,13 @@ const {
   getFollowers,
   getFollowing,
 } = require('../controllers/follow.controller');
+const { searchUsers } = require('../controllers/search.controller');
 const { protect, optionalAuth } = require('../middleware/auth');
 const validate = require('../middleware/validate');
+
+// IMPORTANT: /search and /profile must both come before /:username,
+// otherwise Express matches them as usernames ("search", "profile").
+router.get('/search', optionalAuth, searchUsers);
 
 router.put(
   '/profile',
