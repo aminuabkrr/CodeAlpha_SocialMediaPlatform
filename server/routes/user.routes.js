@@ -3,11 +3,15 @@ const { body } = require('express-validator');
 const router = express.Router();
 
 const { getUserProfile, updateProfile } = require('../controllers/user.controller');
+const {
+  followUser,
+  unfollowUser,
+  getFollowers,
+  getFollowing,
+} = require('../controllers/follow.controller');
 const { protect } = require('../middleware/auth');
 const validate = require('../middleware/validate');
 
-// IMPORTANT: /profile must be registered before /:username,
-// otherwise Express would treat "profile" as a :username value.
 router.put(
   '/profile',
   protect,
@@ -20,6 +24,13 @@ router.put(
   updateProfile
 );
 
+router.post('/:userId/follow', protect, followUser);
+router.delete('/:userId/follow', protect, unfollowUser);
+router.get('/:userId/followers', getFollowers);
+router.get('/:userId/following', getFollowing);
+
+// Keep this LAST - it's the most generic pattern and would otherwise
+// swallow /profile, /:userId/follow, etc.
 router.get('/:username', getUserProfile);
 
 module.exports = router;
