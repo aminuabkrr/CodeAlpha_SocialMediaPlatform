@@ -327,3 +327,28 @@ a:hover { text-decoration: underline; }
   .profile-actions { width: 100%; }
   .profile-actions button { width: 100%; }
 }
+/* Search page - append to existing style.css */
+
+.user-result-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.user-result-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-text);
+  text-decoration: none;
+  flex: 1;
+  min-width: 0;
+}
+.user-result-link:hover { text-decoration: none; }
+.user-result-link .post-author-name:hover { text-decoration: underline; }
