@@ -231,3 +231,50 @@ a:hover { text-decoration: underline; }
   .app-shell { padding: 0 12px 80px; }
   .auth-card { padding: 24px; }
   }
+/* Navbar active state + comment thread styles - append to existing style.css */
+
+.navbar nav a.active { color: var(--color-primary); font-weight: 600; }
+
+.comments-section {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border);
+}
+
+.comment-item {
+  display: flex;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.comment-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--color-text-muted);
+  color: #fff;
+  font-size: 0.7rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.comment-body { font-size: 0.85rem; }
+.comment-author { font-weight: 600; margin-right: 6px; }
+.comment-meta { color: var(--color-text-muted); font-size: 0.72rem; margin-top: 2px; }
+.comment-meta button {
+  background: none; border: none; color: var(--color-danger);
+  cursor: pointer; font-size: 0.72rem; margin-left: 8px;
+}
+
+.add-comment-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+.add-comment-form input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+}
+.btn-sm { padding: 8px 14px; font-size: 0.8rem; }
