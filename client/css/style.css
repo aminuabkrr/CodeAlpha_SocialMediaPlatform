@@ -278,3 +278,52 @@ a:hover { text-decoration: underline; }
   font-size: 0.85rem;
 }
 .btn-sm { padding: 8px 14px; font-size: 0.8rem; }
+
+/* Profile page - append to existing style.css */
+
+.profile-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.profile-avatar-lg {
+  width: 72px;
+  height: 72px;
+  font-size: 1.4rem;
+}
+
+.profile-info { flex: 1; min-width: 200px; }
+.profile-info h1 { font-size: 1.3rem; }
+.profile-bio { margin-top: 8px; font-size: 0.9rem; color: var(--color-text); }
+
+.profile-stats {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.profile-actions { align-self: center; }
+
+.edit-profile-form {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 20px;
+  margin-top: 12px;
+}
+
+.edit-profile-form textarea { resize: vertical; }
+
+@media (max-width: 480px) {
+  .profile-card { flex-direction: column; align-items: center; text-align: center; }
+  .profile-actions { width: 100%; }
+  .profile-actions button { width: 100%; }
+}
