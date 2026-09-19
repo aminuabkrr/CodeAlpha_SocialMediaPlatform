@@ -9,6 +9,7 @@ const {
   updatePost,
   deletePost,
 } = require('../controllers/post.controller');
+const { likePost, unlikePost, getPostLikes } = require('../controllers/like.controller');
 const { protect } = require('../middleware/auth');
 const validate = require('../middleware/validate');
 
@@ -42,5 +43,9 @@ router.put(
   updatePost
 );
 router.delete('/:id', protect, deletePost);
+
+router.post('/:postId/like', protect, likePost);
+router.delete('/:postId/like', protect, unlikePost);
+router.get('/:postId/likes', getPostLikes);
 
 module.exports = router;
