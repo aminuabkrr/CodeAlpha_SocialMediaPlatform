@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Follow = require('../models/Follow');
+const Post = require('../models/Post');
 const { success, failure } = require('../utils/response');
 
 // GET /api/users/:username
@@ -13,7 +14,6 @@ const getUserProfile = async (req, res, next) => {
 
     let isFollowing = false;
 
-    // req.user is only set if a valid token was attached (optionalAuth, see middleware/auth.js).
     if (req.user && String(req.user._id) !== String(user._id)) {
       const existingFollow = await Follow.findOne({
         follower: req.user._id,
@@ -23,6 +23,37 @@ const getUserProfile = async (req, res, next) => {
     }
 
     return success(res, { user, isFollowing }, 'Profile fetched');
+  } catch (err) {
+    next(err);
+  }
+};
+
+// GET /api/users/:username/posts
+const getUserPosts = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ username: req.params.username.toLowerCase() });
+    if (!user) {
+      return failure(res, 'User not found', 404);
+    }
+
+    const page = Math.max(parseInt(req.query.page) || 1, 1);
+    const limit = Math.min(parseInt(req.query.limit) || 10, 50);
+    const skip = (page - 1) * limit;
+
+    const [posts, total] = await Promise.all([
+      Post.find({ author: user._id })
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .populate('author', 'name username profileImage'),
+      Post.countDocuments({ author: user._id }),
+    ]);
+
+    return success(
+      res,
+      { posts, pagination: { page, limit, total, pages: Math.ceil(total / limit) } },
+      "User's posts fetched"
+    );
   } catch (err) {
     next(err);
   }
@@ -55,4 +86,4 @@ const updateProfile = async (req, res, next) => {
   }
 };
 
-module.exports = { getUserProfile, updateProfile };
+module.exports = { getUserProfile, updateProfile, getUserPosts };
