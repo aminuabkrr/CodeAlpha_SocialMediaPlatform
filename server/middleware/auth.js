@@ -24,11 +24,37 @@ const protect = async (req, res, next) => {
       return failure(res, 'Not authorized, user no longer exists', 401);
     }
 
-    req.user = user; // full user doc (passwordHash excluded by default select:false)
+    req.user = user;
     next();
   } catch (err) {
     next(err);
   }
 };
 
-module.exports = { protect };
+// Attaches req.user if a valid token is present; otherwise just continues.
+// Used on public routes that behave slightly differently for logged-in viewers.
+const optionalAuth = async (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return next();
+    }
+
+    const token = authHeader.split(' ')[1];
+
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await User.findById(decoded.id);
+      if (user) req.user = user;
+    } catch (err) {
+      // invalid/expired token on an optional route - just proceed unauthenticated
+    }
+
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { protect, optionalAuth };
