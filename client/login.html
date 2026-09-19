@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log In | CodeAlpha Social</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-card">
+      <h1>Welcome back</h1>
+      <p class="subtitle">Log in to see your feed.</p>
+
+      <div id="formAlert" class="alert alert-error" style="display:none;"></div>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="emailOrUsername">Email or Username</label>
+          <input type="text" id="emailOrUsername" name="emailOrUsername" required />
+          <div class="form-error" id="emailOrUsernameError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required />
+          <div class="form-error" id="passwordError"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" id="loginBtn">Log In</button>
+      </form>
+
+      <p style="margin-top:16px; font-size:0.85rem; text-align:center;">
+        Don't have an account? <a href="register.html">Sign up</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    Auth.redirectIfLoggedIn();
+
+    const form = document.getElementById('loginForm');
+    const alertBox = document.getElementById('formAlert');
+    const submitBtn = document.getElementById('loginBtn');
+
+    function clearErrors() {
+      alertBox.style.display = 'none';
+      document.querySelectorAll('.form-error').forEach((el) => {
+        el.textContent = '';
+        el.classList.remove('visible');
+      });
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearErrors();
+
+      const emailOrUsername = document.getElementById('emailOrUsername').value.trim();
+      const password = document.getElementById('password').value;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Logging in...';
+
+      try {
+        const data = await api.login({ emailOrUsername, password });
+        Auth.saveSession(data.token, data.user);
+        window.location.href = 'feed.html';
+      } catch (err) {
+        if (err.errors && err.errors.length) {
+          err.errors.forEach((fieldErr) => {
+            const el = document.getElementById(`${fieldErr.field}Error`);
+            if (el) {
+              el.textContent = fieldErr.message;
+              el.classList.add('visible');
+            }
+          });
+        } else {
+          alertBox.textContent = err.message;
+          alertBox.style.display = 'block';
+        }
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Log In';
+      }
+    });
+  </script>
+</body>
+</html>
