@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Post | CodeAlpha Social</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="navbar" id="navbar"></header>
+
+  <main class="app-shell">
+    <div class="post-card" style="margin-top:16px;">
+      <h2 style="margin-bottom:16px;">Create a post</h2>
+
+      <div id="formAlert" class="alert alert-error" style="display:none;"></div>
+
+      <form id="createPostForm">
+        <div class="form-group">
+          <label for="postContent">What's on your mind?</label>
+          <textarea id="postContent" rows="4" maxlength="500" placeholder="Share something..." required></textarea>
+          <div id="charCount" style="text-align:right; font-size:0.75rem; color:var(--color-text-muted); margin-top:4px;">0 / 500</div>
+        </div>
+
+        <div class="form-group">
+          <label for="postImageUrl">Image URL (optional)</label>
+          <input type="text" id="postImageUrl" placeholder="https://..." />
+          <img id="imagePreview" class="post-image" style="display:none; margin-top:8px;" alt="Preview" />
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Post</button>
+      </form>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/create-post.js"></script>
+</body>
+</html>
