@@ -9,7 +9,7 @@ const {
   getFollowers,
   getFollowing,
 } = require('../controllers/follow.controller');
-const { protect } = require('../middleware/auth');
+const { protect, optionalAuth } = require('../middleware/auth');
 const validate = require('../middleware/validate');
 
 router.put(
@@ -29,8 +29,6 @@ router.delete('/:userId/follow', protect, unfollowUser);
 router.get('/:userId/followers', getFollowers);
 router.get('/:userId/following', getFollowing);
 
-// Keep this LAST - it's the most generic pattern and would otherwise
-// swallow /profile, /:userId/follow, etc.
-router.get('/:username', getUserProfile);
+router.get('/:username', optionalAuth, getUserProfile);
 
 module.exports = router;
