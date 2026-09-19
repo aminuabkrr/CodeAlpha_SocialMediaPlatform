@@ -5,24 +5,19 @@ const morgan = require('morgan');
 const connectDB = require('./config/db');
 const { notFound, errorHandler } = require('./middleware/errorHandler');
 const healthRoutes = require('./routes/health.routes');
+const authRoutes = require('./routes/auth.routes');
 
 const app = express();
 
-// Connect to MongoDB
 connectDB();
 
-// Core middleware
 app.use(cors({ origin: process.env.CLIENT_ORIGIN || '*' }));
 app.use(express.json());
 app.use(morgan('dev'));
 
-// Routes (health check only for now - more mounted in later stages)
 app.use('/api/health', healthRoutes);
+app.use('/api/auth', authRoutes);
 
-// Static client files (optional - lets you run everything from one server)
-// app.use(express.static(path.join(__dirname, '../client')));
-
-// Error handling (must be last)
 app.use(notFound);
 app.use(errorHandler);
 
