@@ -1,5 +1,6 @@
 const Post = require('../models/Post');
 const Like = require('../models/Like');
+const Comment = require('../models/Comment');
 const { success, failure } = require('../utils/response');
 
 const createPost = async (req, res, next) => {
@@ -81,8 +82,12 @@ const deletePost = async (req, res, next) => {
       return failure(res, 'You are not authorized to delete this post', 403);
     }
 
-    await Like.deleteMany({ post: post._id });
+    await Promise.all([
+      Like.deleteMany({ post: post._id }),
+      Comment.deleteMany({ post: post._id }),
+    ]);
     await post.deleteOne();
+
     return success(res, {}, 'Post deleted successfully');
   } catch (err) {
     next(err);
