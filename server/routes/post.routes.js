@@ -11,6 +11,7 @@ const {
 } = require('../controllers/post.controller');
 const { likePost, unlikePost, getPostLikes } = require('../controllers/like.controller');
 const { getComments, addComment } = require('../controllers/comment.controller');
+const { getFeed } = require('../controllers/feed.controller');
 const { protect } = require('../middleware/auth');
 const validate = require('../middleware/validate');
 
@@ -23,6 +24,10 @@ const postValidation = [
     .withMessage('Post content cannot exceed 500 characters'),
   body('imageUrl').optional().trim().isURL().withMessage('imageUrl must be a valid URL'),
 ];
+
+// IMPORTANT: /feed must be registered BEFORE /:id, otherwise Express
+// would treat "feed" as a post ID and 404/CastError on lookup.
+router.get('/feed', protect, getFeed);
 
 router.get('/', getPosts);
 router.post('/', protect, postValidation, validate, createPost);
