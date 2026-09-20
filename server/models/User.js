@@ -59,10 +59,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true } // gives createdAt / updatedAt automatically
 );
 
-// Indexes (unique already creates them, but explicit for clarity/intent)
-userSchema.index({ username: 1 }, { unique: true });
-userSchema.index({ email: 1 }, { unique: true });
-
 // Strip sensitive/internal fields whenever a User doc is serialized to JSON
 userSchema.set('toJSON', {
   transform: (doc, ret) => {
