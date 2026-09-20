@@ -217,10 +217,17 @@ No automated test suite is included by default — the project was verified thro
 
 ## Deployment
 
-Not yet deployed. Suggested path: host the API on Render/Railway/Fly.io with an Atlas-hosted MongoDB, set the production environment variables there, and either serve the static `client/` folder from the same Express app (as configured) or deploy it separately to a static host (Netlify/Vercel) with `CLIENT_ORIGIN` and `API_BASE_URL` updated accordingly.
+Deployed on **Render** (web service) with **MongoDB Atlas** as the database — the same Express app serves both the API (`/api/*`) and the static frontend from one instance, so no separate frontend host or CORS configuration is needed.
 
-**Live demo:** _(add link once deployed)_
-**GitHub repository:** _(add link)_
+Notes on the live setup:
+- Render environment variables (`MONGO_URI`, `JWT_SECRET`, `JWT_EXPIRES_IN`, `NODE_ENV`, `CLIENT_ORIGIN`) are configured in the Render dashboard, not committed to the repo.
+- MongoDB Atlas supports multi-document transactions natively, so the follow/like/comment counter logic works correctly in production without any replica-set configuration.
+- The free Render tier spins down after ~15 minutes of inactivity — the first request after idle time may take 20–30 seconds to wake the instance back up.
+
+**Live demo:** https://codealpha-socialmediaplatform-fmdy.onrender.com
+**GitHub repository:** https://github.com/aminuabkrr/CodeAlpha_SocialMediaPlatform
+
+Demo accounts (seeded): `ada`, `grace`, `alan`, `margaret`, `katherine`, `dennis` — all share the password `password123`.
 
 ## Screenshots
 
