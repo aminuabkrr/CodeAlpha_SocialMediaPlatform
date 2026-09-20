@@ -2,7 +2,7 @@
 
 A full-stack mini social media platform built for **CodeAlpha's Full Stack Development Internship — Task 2**. Users can register, build a profile, post updates, follow other users, like and comment on posts, and browse a personalized feed — all backed by a real REST API and MongoDB database, with a framework-free HTML/CSS/JavaScript frontend.
 
-This is the second project in the internship series, following [CodeAlpha_EcommerceStore](../CodeAlpha_EcommerceStore) (Task 1).
+This is the second project in the internship series, following [CodeAlpha_EcommerceStore](https://github.com/aminuabkrr/CodeAlpha_EcommerceStore) (Task 1).
 
 ---
 
